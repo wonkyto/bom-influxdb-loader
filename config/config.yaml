@@ -1,0 +1,12 @@
+---
+InfluxDb:
+  'Host': 'localhost'
+  'Port': '8086'
+  'Database': 'bom-observations'
+Data:
+  - 'state': 'NSW'
+    'stations':
+      - 'name': 'Bellambi'
+        'id': '94749' 
+      - 'name': 'Sydney'
+        'id': '94768'
