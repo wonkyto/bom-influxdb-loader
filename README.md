@@ -39,3 +39,25 @@ Here we define the following:
  * BOM source state and station ids.
 
 See [config.yaml](config/config.yaml) for an example.
+
+## Building
+We will push the image to docker hub. Given this is created to run on x86 or raspi, we'll build two images.
+```
+# On amd64
+docker build -t wonkyto/bom-influxdb-loader:1.0.1-amd64 .
+docker push wonkyto/bom-influxdb-loader:1.0.1-amd64
+
+# On raspi
+docker build -t wonkyto/bom-influxdb-loader:1.0.1-arm32v6 .
+docker push wonkyto/bom-influxdb-loader:1.0.1-arm32v6
+
+# Enable experimental mode to ~/.docker/config.json
+"experimental": "enabled"
+
+# make multi arch
+docker manifest create wonkyto/bom-influxdb-loader:1.0.0 wonkyto/bom-influxdb-loader:1.0.1-amd64 wonkyto/bom-influxdb-loader:1.0.1-arm32v6
+docker manifest annotate wonkyto/bom-influxdb-loader:1.0.0 wonkyto/bom-influxdb-loader:1.0.1-arm32v6 --os linux --arch arm
+docker manifest push wonkyto/bom-influxdb-loader:1.0.0 --purge
+docker manifest create wonkyto/bom-influxdb-loader:latest wonkyto/bom-influxdb-loader:1.0.1-amd64 wonkyto/bom-influxdb-loader:1.0.1-arm32v6
+docker manifest annotate wonkyto/bom-influxdb-loader:latest wonkyto/bom-influxdb-loader:1.0.1-arm32v6 --os linux --arch arm
+docker manifest push wonkyto/bom-influxdb-loader:latest --purge

@@ -61,23 +61,20 @@ def poll(influx_client, data):
     for src in data:
         logger.info("Polling Bom: '{}' data".format(src['state']))
         obs_data = observations.Observations(src['state'])
-
+        metrics = []
         if obs_data is not None:
             for station in src['stations']:
                 location = station['name']
                 wmo_id = station['id']
-                # desc = obs_data.station_attribute(wmo_id, 'description')
                 period = obs_data.period_attribute(wmo_id, 'time-local')
                 airTemp = obs_data.air_temperature(wmo_id)
                 rainfall = obs_data.rainfall(wmo_id)
 
-                logger.info("Station ID: {wmo_id}")
-                # logger.info("Description: {desc}")
-                logger.info("Time: {period}")
-                logger.info("Air Temp: {airTemp}")
-                logger.info("Rainfall: {rainfall}")
+                logger.debug("Station ID: {}".format(wmo_id))
+                logger.debug("Time: {}".format(period))
+                logger.debug("Air Temp: {}".format(airTemp))
+                logger.debug("Rainfall: {}".format(rainfall))
 
-                metrics = []
                 measurement = {
                     'measurement': 'weather',
                     'tags': {
@@ -91,13 +88,14 @@ def poll(influx_client, data):
                     }
                 }
                 metrics.append(measurement)
-                print(metrics)
-                if influx_client.write_points(metrics):
-                    logger.debug("Sending metrics to influxdb: successful")
-                else:
-                    logger.debug("Sending metrics to influxdb: failed")
         else:
             logger.warning("No data received for {}".format(src['state']))
+
+        if metrics:
+            if influx_client.write_points(metrics):
+                logger.debug("Sending metrics to influxdb: successful")
+            else:
+                logger.debug("Sending metrics to influxdb: failed")
 
 
 def main():
