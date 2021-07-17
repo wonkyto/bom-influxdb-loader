@@ -55,9 +55,9 @@ docker push wonkyto/bom-influxdb-loader:1.0.1-arm32v6
 "experimental": "enabled"
 
 # make multi arch
-docker manifest create wonkyto/bom-influxdb-loader:1.0.0 wonkyto/bom-influxdb-loader:1.0.1-amd64 wonkyto/bom-influxdb-loader:1.0.1-arm32v6
-docker manifest annotate wonkyto/bom-influxdb-loader:1.0.0 wonkyto/bom-influxdb-loader:1.0.1-arm32v6 --os linux --arch arm
-docker manifest push wonkyto/bom-influxdb-loader:1.0.0 --purge
+docker manifest create wonkyto/bom-influxdb-loader:1.0.1 wonkyto/bom-influxdb-loader:1.0.1-amd64 wonkyto/bom-influxdb-loader:1.0.1-arm32v6
+docker manifest annotate wonkyto/bom-influxdb-loader:1.0.1 wonkyto/bom-influxdb-loader:1.0.1-arm32v6 --os linux --arch arm
+docker manifest push wonkyto/bom-influxdb-loader:1.0.1 --purge
 docker manifest create wonkyto/bom-influxdb-loader:latest wonkyto/bom-influxdb-loader:1.0.1-amd64 wonkyto/bom-influxdb-loader:1.0.1-arm32v6
 docker manifest annotate wonkyto/bom-influxdb-loader:latest wonkyto/bom-influxdb-loader:1.0.1-arm32v6 --os linux --arch arm
 docker manifest push wonkyto/bom-influxdb-loader:latest --purge
