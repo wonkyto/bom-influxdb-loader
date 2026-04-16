@@ -1,18 +1,38 @@
-version: "3.7"
 services:
-  flake8:
-    image: wonkyto/bom-influxdb-loader:1.0.0
-    command: flake8
+  lint:
+    build:
+      context: .
+      target: dev
+    command: ruff check /app
     volumes:
       - ./app:/app
-    working_dir: /app
+
+  format:
+    build:
+      context: .
+      target: dev
+    command: ruff format --check /app
+    volumes:
+      - ./app:/app
+
+  pytest:
+    build:
+      context: .
+      target: dev
+    command: pytest /tests
+    volumes:
+      - ./app:/app
+      - ./config:/config
+      - ./tests:/tests
+
   run:
-    image: wonkyto/bom-influxdb-loader:1.0.0
+    image: wonkyto/bom-influxdb-loader:1.1.0
     volumes:
       - ./config:/config
     working_dir: /app
+
   test:
-    image: wonkyto/bom-influxdb-loader:1.0.0
+    image: wonkyto/bom-influxdb-loader:1.1.0
     volumes:
       - ./app:/app
       - ./config:/config
